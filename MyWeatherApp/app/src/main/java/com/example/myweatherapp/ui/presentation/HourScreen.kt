@@ -44,7 +44,7 @@ fun HourScreen(hoursListState: MutableList<HourModel>){
         .padding(start=5.dp, end=5.dp, bottom=5.dp).fillMaxSize()
         .background(color = LightGrey)){
         itemsIndexed(hoursListState){
-            index, item->
+            _, item->
             HoursItem(hours = item)
         }
     }

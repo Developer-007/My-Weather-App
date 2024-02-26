@@ -38,23 +38,30 @@ import com.example.myweatherapp.data.model.WeatherDataModel
 import com.example.myweatherapp.data.repository.WeatherDataRepositoryImpl
 import com.example.myweatherapp.data.retrofit.WeatherApi
 import com.example.myweatherapp.domain.GetWeatherDataUseCase
+import com.example.myweatherapp.domain.WeatherDataRepository
 import com.example.myweatherapp.ui.theme.Grey
 import com.example.myweatherapp.ui.theme.MyWeatherAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @SuppressLint("CoroutineCreationDuringComposition", "UnrememberedMutableState")
+    @SuppressLint("CoroutineCreationDuringComposition")
+
+    @Inject
+    lateinit var getWeatherDataUseCase: GetWeatherDataUseCase
+
+    @SuppressLint("UnrememberedMutableState")
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val hoursListState = mutableStateListOf<HourModel>()
-            val weatherDataRepository by lazy {WeatherDataRepositoryImpl()}
-            val getWeatherDataUseCase by lazy {GetWeatherDataUseCase(weatherDataRepository)}
             val temp = remember{
                 mutableStateOf("")
             }
@@ -142,7 +149,7 @@ class MainActivity : ComponentActivity() {
             Scaffold(
                 topBar={
                     TopAppBar(
-                        colors=TopAppBarDefaults.smallTopAppBarColors(
+                        colors=TopAppBarDefaults.topAppBarColors(
                             containerColor= Grey
                         ),
                         title={
